@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react'; // Añadido useCallback
 import { supabase } from '../supabase';
 import './LoveLetter.css';
 import { useBackgroundAnimation } from './BackgroundAnimations';
@@ -34,20 +34,7 @@ const LoveLetter = () => {
     { name: 'Clásico', value: 'classic', icon: '📝' },
     { name: 'Sorpresa', value: 'surprise', icon: '🎁' },
   ];
-
-  useEffect(() => {
-    const savedCode = localStorage.getItem('love_code');
-    const savedName = localStorage.getItem('love_author');
-    
-    if (savedCode === APP_SECRET_CODE) {
-      setSecretCode(savedCode);
-      setIsCodeVerified(true);
-      if (savedName) setAuthorName(savedName);
-      fetchMessages(savedCode);
-    }
-  }, [fetchMessages]);
-
-  const fetchMessages = async (code) => {
+  const fetchMessages = useCallback(async (code) => {
     try {
       setLoading(true);
       
@@ -79,7 +66,19 @@ const LoveLetter = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const savedCode = localStorage.getItem('love_code');
+    const savedName = localStorage.getItem('love_author');
+    
+    if (savedCode === APP_SECRET_CODE) {
+      setSecretCode(savedCode);
+      setIsCodeVerified(true);
+      if (savedName) setAuthorName(savedName);
+      fetchMessages(savedCode);
+    }
+  }, [fetchMessages]);
 
   const verifyCode = () => {
     if (secretCode === APP_SECRET_CODE) {

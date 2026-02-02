@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // Añadido useCallback
 import { supabase } from '../supabase';
 import './Calendar.css';
 import { useBackgroundAnimation } from './BackgroundAnimations';
@@ -124,17 +124,7 @@ const Memories = () => {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-
-  useEffect(() => {
-    const savedCode = localStorage.getItem('calendar_code');
-    if (savedCode === APP_SECRET_CODE) {
-      setSecretCode(savedCode);
-      setIsCodeVerified(true);
-      fetchEvents(savedCode);
-    }
-  }, [fetchEvents]);
-
-  const fetchEvents = async (code) => {
+const fetchEvents = useCallback(async (code) => {
     try {
       setLoading(true);
       const { data, error } = await supabase
@@ -174,7 +164,15 @@ const Memories = () => {
     } finally {
       setLoading(false);
     }
-  };
+  },[]);
+  useEffect(() => {
+    const savedCode = localStorage.getItem('calendar_code');
+    if (savedCode === APP_SECRET_CODE) {
+      setSecretCode(savedCode);
+      setIsCodeVerified(true);
+      fetchEvents(savedCode);
+    }
+  }, [fetchEvents]);
 
   // Verificar eventos de hoy y mostrar notificación
   const checkTodayEvents = (eventsList) => {
@@ -628,19 +626,6 @@ const Memories = () => {
       .slice(0, 5);
   };
 
-  const getEventsByMonth = () => {
-    const eventsByMonth = {};
-    events.forEach(event => {
-      const date = toLocalDate(event.event_date);
-      const monthYear = `${date.getFullYear()}-${date.getMonth()}`;
-      
-      if (!eventsByMonth[monthYear]) {
-        eventsByMonth[monthYear] = [];
-      }
-      eventsByMonth[monthYear].push(event);
-    });
-    return eventsByMonth;
-  };
 
   const verifyCode = () => {
     if (secretCode === APP_SECRET_CODE) {
@@ -1084,7 +1069,6 @@ const Memories = () => {
 
   // ================= VARIABLES PARA RENDER =================
   const upcomingEvents = getUpcomingEvents();
-  const eventsByMonth = getEventsByMonth();
 
   return (
     <div className="memories-container">
