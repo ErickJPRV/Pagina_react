@@ -48,6 +48,54 @@ const Memories = () => {
   ];
 
   // ================= FUNCIONES CORREGIDAS PARA TIMEZONE =================
+ const showNotification = (message, type = 'success') => {
+    const notification = document.createElement('div');
+    notification.className = `memory-notification ${type}`;
+    notification.textContent = message;
+    
+    // Estilos inline para asegurar que se vea
+    notification.style.cssText = `
+      position: fixed;
+      top: 40px;
+      right: 40px;
+      padding: 20px 25px;
+      border-radius: 15px;
+      color: white;
+      font-weight: 700;
+      z-index: 9999;
+      opacity: 0;
+      transform: translateX(100px);
+      transition: all 0.4s ease;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      min-width: 300px;
+      max-width: 400px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      font-size: 1rem;
+      ${type === 'success' ? 
+        'background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);' : 
+        type === 'error' ?
+        'background: linear-gradient(135deg, #f44336 0%, #c62828 100%);' :
+        'background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);'}
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.style.opacity = '1';
+      notification.style.transform = 'translateX(0)';
+    }, 10);
+    
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      notification.style.transform = 'translateX(100px)';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          document.body.removeChild(notification);
+        }
+      }, 300);
+    }, 3000);
+  };
 
   // Crear fecha local sin problemas de timezone
   const createLocalDate = (year, month, day) => {
@@ -124,14 +172,14 @@ const Memories = () => {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-const checkTodayEvents = (eventsList) => {
+const checkTodayEvents = useCallback((eventsList) => {
     const todayEvents = eventsList.filter(event => isToday(event.event_date));
     
     if (todayEvents.length > 0) {
       console.log(`🎉 Hay ${todayEvents.length} eventos hoy!`);
       showNotification(`🎉 ¡Tienes ${todayEvents.length} evento(s) hoy!`, 'success');
     }
-  };
+  },isToday,showNotification);
 const fetchEvents = useCallback(async (code) => {
     try {
       setLoading(true);
@@ -566,55 +614,7 @@ const fetchEvents = useCallback(async (code) => {
     setSelectedEvent(null);
   };
 
-  const showNotification = (message, type = 'success') => {
-    const notification = document.createElement('div');
-    notification.className = `memory-notification ${type}`;
-    notification.textContent = message;
-    
-    // Estilos inline para asegurar que se vea
-    notification.style.cssText = `
-      position: fixed;
-      top: 40px;
-      right: 40px;
-      padding: 20px 25px;
-      border-radius: 15px;
-      color: white;
-      font-weight: 700;
-      z-index: 9999;
-      opacity: 0;
-      transform: translateX(100px);
-      transition: all 0.4s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      min-width: 300px;
-      max-width: 400px;
-      backdrop-filter: blur(10px);
-      border: 2px solid rgba(255, 255, 255, 0.2);
-      font-size: 1rem;
-      ${type === 'success' ? 
-        'background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);' : 
-        type === 'error' ?
-        'background: linear-gradient(135deg, #f44336 0%, #c62828 100%);' :
-        'background: linear-gradient(135deg, #2196F3 0%, #0D47A1 100%);'}
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-      notification.style.opacity = '1';
-      notification.style.transform = 'translateX(0)';
-    }, 10);
-    
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translateX(100px)';
-      setTimeout(() => {
-        if (notification.parentNode) {
-          document.body.removeChild(notification);
-        }
-      }, 300);
-    }, 3000);
-  };
-
+ 
   const getUpcomingEvents = () => {
     const today = toLocalDate(new Date());
     
