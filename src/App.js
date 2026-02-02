@@ -19,7 +19,8 @@ function App() {
       case 'gallery':
         return <Gallery />;
       case 'timeline':
-        return <Timeline />;
+        // AQUI ESTA EL CAMBIO: Pasamos setCurrentPage al Timeline
+        return <Timeline setCurrentPage={setCurrentPage} />;
       case 'letter':
         return <LoveLetter />;
       case 'memories':

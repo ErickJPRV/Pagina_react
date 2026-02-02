@@ -5,7 +5,8 @@ import './Timeline.css';
 import { db } from '../firebase/firebase'; // Para guardar los eventos del Timeline
 import { supabase } from '../supabase'; // Para LEER las fotos de la galería
 import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-function Timeline() {
+
+function Timeline({setCurrentPage}) {
   // ================= ESTADOS =================
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -324,28 +325,62 @@ function Timeline() {
       {/* ===== SELECTOR DE FOTOS (MODAL CON DATOS DE SUPABASE) ===== */}
       {showGalleryPicker && (
         <div className="gallery-picker-modal">
-          <div className="picker-header">
-            <h3>📸 Fotos de vuestra Galería (Supabase)</h3>
-            <button className="close-picker" onClick={() => setShowGalleryPicker(false)}>✕</button>
-          </div>
           <div className="picker-content">
-            {loadingGallery ? (
-              <p style={{textAlign: 'center', padding: '20px'}}>Cargando fotos de la nube...</p>
-            ) : galleryPhotos.length === 0 ? (
-              <div className="no-photos-message">
-                <h4>No hay fotos disponibles</h4>
-                <p>Ve a la sección "Galería" para subir fotos primero.</p>
-              </div>
-            ) : (
-              <div className="photo-grid">
-                {galleryPhotos.map(photo => (
-                  <div key={photo.id} className={`photo-item ${newEvent.selectedImageId === photo.id ? 'selected' : ''}`} onClick={() => handleSelectPhoto(photo)}>
-                    <img src={photo.imageUrl} alt={photo.title} className="photo-thumb" />
-                    {newEvent.selectedImageId === photo.id && <div className="selected-indicator">✓</div>}
+            <div className="picker-header">
+              <h3>📸 Fotos de vuestra Galería</h3>
+              <button className="close-picker" onClick={() => setShowGalleryPicker(false)}>✕</button>
+            </div>
+            <div className="picker-body">
+              {loadingGallery ? (
+                <div className="picker-loading">
+                  <p>Cargando fotos de la nube...</p>
+                </div>
+              ) : galleryPhotos.length === 0 ? (
+                <div className="no-photos-message">
+                  <div className="no-photos-content">
+                    <div className="no-photos-icon">📷</div>
+                    <h4>No hay fotos disponibles</h4>
+                    <p>Ve a la sección "Galería" para subir fotos primero.</p>
+                   <button className="go-to-gallery-btn" onClick={() => {
+                        setShowGalleryPicker(false); // Cierra el modal primero
+                        
+                        // Si existe la función, cambiamos de página
+                        if (setCurrentPage) {
+                          setCurrentPage('gallery');
+                        } else {
+                          console.error("La función setCurrentPage no fue pasada al Timeline");
+                        }
+                      }}>
+                      <span>🖼️</span>
+                      Ir a Galería
+                    </button>
                   </div>
-                ))}
-              </div>
-            )}
+                </div>
+              ) : (
+                <div className="photo-grid">
+                  {galleryPhotos.map(photo => (
+                    <div 
+                      key={photo.id} 
+                      className={`photo-item ${newEvent.selectedImageId === photo.id ? 'selected' : ''}`} 
+                      onClick={() => handleSelectPhoto(photo)}
+                    >
+                      <img src={photo.imageUrl} alt={photo.title || 'Foto'} className="photo-thumb" />
+                      {newEvent.selectedImageId === photo.id && (
+                        <div className="selected-indicator">✓</div>
+                      )}
+                      <div className="photo-info">
+                        <div className="photo-title">{photo.title || 'Sin título'}</div>
+                        {photo.createdAt && (
+                          <div className="photo-date">
+                            {new Date(photo.createdAt).toLocaleDateString()}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -353,12 +388,57 @@ function Timeline() {
       {/* ===== LISTA DE EVENTOS (DESDE FIREBASE) ===== */}
       <div className="timeline-content">
         {loading ? (
-          <div className="loading-state"><p>Cargando historia desde Firebase...</p></div>
+          <div className="loading-state">
+            <p>Cargando historia desde Firebase...</p>
+          </div>
         ) : events.length === 0 ? (
           <div className="empty-timeline">
+            {/* Nube decorativa con corazones */}
+            <div className="empty-cloud">☁️</div>
+            <div className="cloud-hearts">
+              <span className="cloud-heart">💖</span>
+              <span className="cloud-heart">❤️</span>
+              <span className="cloud-heart">💕</span>
+              <span className="cloud-heart">💗</span>
+              <span className="cloud-heart">💓</span>
+            </div>
+            
             <h2>Nuestra historia comienza aquí 📖</h2>
-            <p>Agrega el primer evento para empezar la línea de tiempo.</p>
-            <button className="first-event-btn" onClick={() => setShowEventForm(true)}>✨ Crear Primer Evento</button>
+            <p className="empty-text">Agrega el primer evento para empezar la línea de tiempo.</p>
+            
+            {/* Características destacadas */}
+            <div className="firestore-features">
+              <div className="feature">
+                <span className="feature-icon">⚡</span>
+                <div className="feature-content">
+                  <h4>En tiempo real</h4>
+                  <p>Tus eventos se sincronizan al instante</p>
+                </div>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">💾</span>
+                <div className="feature-content">
+                  <h4>Guardado en la nube</h4>
+                  <p>Seguro y accesible desde cualquier lugar</p>
+                </div>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">🖼️</span>
+                <div className="feature-content">
+                  <h4>Galería integrada</h4>
+                  <p>Usa fotos de tu galería personal</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Botón principal */}
+            <button className="first-event-btn" onClick={() => setShowEventForm(true)}>
+              <span className="btn-icon">✨</span>
+              Crear Primer Evento
+            </button>
+            
+            {/* Línea decorativa */}
+            <div className="empty-decoration-line"></div>
           </div>
         ) : (
           <div className="timeline">
@@ -416,11 +496,27 @@ function Timeline() {
               </div>
             </div>
             <div className="modal-body">
-              {selectedEvent.imageUrl && <div className="modal-image"><img src={selectedEvent.imageUrl} alt={selectedEvent.title} /></div>}
-              {selectedEvent.description && <div className="modal-description"><h3>💬 Detalles</h3><p>{selectedEvent.description}</p></div>}
+              {selectedEvent.imageUrl && (
+                <div className="modal-image">
+                  <img src={selectedEvent.imageUrl} alt={selectedEvent.title} />
+                </div>
+              )}
+              {selectedEvent.description && (
+                <div className="modal-description">
+                  <h3>💬 Detalles</h3>
+                  <p>{selectedEvent.description}</p>
+                </div>
+              )}
             </div>
             <div className="modal-footer">
-              <button className="delete-btn" onClick={() => { if(window.confirm('¿Borrar?')) { handleDeleteEvent(selectedEvent.id); setSelectedEvent(null); }}}>🗑️ Eliminar</button>
+              <button className="delete-btn" onClick={() => { 
+                if(window.confirm('¿Seguro que deseas eliminar este evento?')) { 
+                  handleDeleteEvent(selectedEvent.id); 
+                  setSelectedEvent(null); 
+                }
+              }}>
+                🗑️ Eliminar Evento
+              </button>
             </div>
           </div>
         </div>
