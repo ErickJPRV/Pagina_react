@@ -11,7 +11,6 @@ function Timeline() {
   const [loading, setLoading] = useState(true);
   const [showEventForm, setShowEventForm] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-   const { Background } = useBackgroundAnimation('timeline');
   // Estados para el selector de fotos (Traídas de Supabase)
   const [showGalleryPicker, setShowGalleryPicker] = useState(false);
   const [galleryPhotos, setGalleryPhotos] = useState([]);
