@@ -98,12 +98,12 @@ const Memories = () => {
   } ,[]);
 
   // Crear fecha local sin problemas de timezone
-  const createLocalDate = (year, month, day) => {
+  const createLocalDate = useCallback((year, month, day) => {
     return new Date(year, month, day);
-  };
+  },[]);
 
   // Convertir cualquier fecha a fecha local (sin horas/minutos/segundos)
-  const toLocalDate = (dateInput) => {
+  const toLocalDate = useCallback((dateInput) => {
     if (!dateInput) return createLocalDate(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     
     if (dateInput instanceof Date) {
@@ -129,7 +129,7 @@ const Memories = () => {
     // Para otros casos
     const date = new Date(dateInput);
     return createLocalDate(date.getFullYear(), date.getMonth(), date.getDate());
-  };
+  },[createLocalDate]);
 
   // Comparar si dos fechas son iguales (solo día, mes, año)
   const areDatesEqual = (date1, date2) => {
@@ -139,11 +139,11 @@ const Memories = () => {
   };
 
   // Verificar si es hoy
-  const isToday = (dateInput) => {
+  const isToday = useCallback((dateInput) => {
     const today = toLocalDate(new Date());
     const compareDate = toLocalDate(dateInput);
     return today.getTime() === compareDate.getTime();
-  };
+  },[toLocalDate]);
 
   // Calcular días faltantes
   const calculateDaysUntil = (eventDate) => {
