@@ -48,7 +48,7 @@ const Memories = () => {
   ];
 
   // ================= FUNCIONES CORREGIDAS PARA TIMEZONE =================
- const showNotification = (message, type = 'success') => {
+ const showNotification = useCallback((message, type = 'success') => {
     const notification = document.createElement('div');
     notification.className = `memory-notification ${type}`;
     notification.textContent = message;
@@ -95,7 +95,7 @@ const Memories = () => {
         }
       }, 300);
     }, 3000);
-  };
+  } ,[]);
 
   // Crear fecha local sin problemas de timezone
   const createLocalDate = (year, month, day) => {
@@ -179,7 +179,7 @@ const checkTodayEvents = useCallback((eventsList) => {
       console.log(`🎉 Hay ${todayEvents.length} eventos hoy!`);
       showNotification(`🎉 ¡Tienes ${todayEvents.length} evento(s) hoy!`, 'success');
     }
-  },isToday,showNotification);
+  },[isToday,showNotification]);
 const fetchEvents = useCallback(async (code) => {
     try {
       setLoading(true);
