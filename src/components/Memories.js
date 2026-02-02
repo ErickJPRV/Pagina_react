@@ -164,7 +164,7 @@ const fetchEvents = useCallback(async (code) => {
     } finally {
       setLoading(false);
     }
-  },[]);
+  },[setLoading, checkTodayEvents]);
   useEffect(() => {
     const savedCode = localStorage.getItem('calendar_code');
     if (savedCode === APP_SECRET_CODE) {

@@ -66,7 +66,7 @@ const LoveLetter = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [filter]);
 
   useEffect(() => {
     const savedCode = localStorage.getItem('love_code');
