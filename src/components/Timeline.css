@@ -611,3 +611,99 @@
 .modal-footer .delete-btn:active {
   transform: scale(0.95);
 }
+/* ======================================================
+   ESTILOS DE EDICIÓN RÁPIDA (DENTRO DE LA TARJETA)
+   ====================================================== */
+
+/* Contenedor del modo edición */
+.edit-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+/* La caja de texto (Input) */
+.edit-input {
+  flex-grow: 1; /* Ocupa todo el espacio disponible */
+  padding: 8px 15px;
+  border: 2px solid #ffc2d1; /* Borde rosa suave */
+  border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  background-color: #fff0f6; /* Fondo muy pálido */
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.edit-input:focus {
+  border-color: #ff6b8b; /* Borde más fuerte al escribir */
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(255, 107, 139, 0.15); /* Resplandor suave */
+}
+
+/* Botones de Guardar (💾) y Cancelar (❌) */
+.edit-save, .edit-cancel {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%; /* Círculos perfectos */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-size: 1rem;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+/* Botón Guardar (Verde suave o Tema) */
+.edit-save {
+  background: #2ed573;
+  color: white;
+}
+.edit-save:hover {
+  background: #26af61;
+  transform: scale(1.15);
+}
+
+/* Botón Cancelar (Rojo suave) */
+.edit-cancel {
+  background: #ff4757;
+  color: white;
+}
+.edit-cancel:hover {
+  background: #ff6b81;
+  transform: scale(1.15);
+}
+/* ======================================================
+   BOTÓN ELIMINAR (EN EL MODAL)
+   ====================================================== */
+
+.modal-footer .delete-btn {
+  background: linear-gradient(135deg, #ff4757, #ff6b81);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 50px; /* Bordes muy redondeados */
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre icono y texto */
+  box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+  transition: all 0.3s ease;
+}
+
+.modal-footer .delete-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.5);
+  background: linear-gradient(135deg, #ff6b81, #ff4757);
+}
+
+.modal-footer .delete-btn:active {
+  transform: scale(0.95);
+}
