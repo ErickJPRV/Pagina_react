@@ -48,7 +48,14 @@ const Memories = () => {
   ];
 
   // ================= FUNCIONES CORREGIDAS PARA TIMEZONE =================
-
+const checkTodayEvents = (eventsList) => {
+    const todayEvents = eventsList.filter(event => isToday(event.event_date));
+    
+    if (todayEvents.length > 0) {
+      console.log(`🎉 Hay ${todayEvents.length} eventos hoy!`);
+      showNotification(`🎉 ¡Tienes ${todayEvents.length} evento(s) hoy!`, 'success');
+    }
+  };
   // Crear fecha local sin problemas de timezone
   const createLocalDate = (year, month, day) => {
     return new Date(year, month, day);
@@ -175,14 +182,7 @@ const fetchEvents = useCallback(async (code) => {
   }, [fetchEvents]);
 
   // Verificar eventos de hoy y mostrar notificación
-  const checkTodayEvents = (eventsList) => {
-    const todayEvents = eventsList.filter(event => isToday(event.event_date));
-    
-    if (todayEvents.length > 0) {
-      console.log(`🎉 Hay ${todayEvents.length} eventos hoy!`);
-      showNotification(`🎉 ¡Tienes ${todayEvents.length} evento(s) hoy!`, 'success');
-    }
-  };
+  
 
   const getLocalEvents = () => {
     try {
