@@ -4,7 +4,7 @@ import './Calendar.css';
 import { useBackgroundAnimation } from './BackgroundAnimations';
 const Memories = () => {
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState('month');
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -132,7 +132,7 @@ const Memories = () => {
       setIsCodeVerified(true);
       fetchEvents(savedCode);
     }
-  }, []);
+  }, [fetchEvents]);
 
   const fetchEvents = async (code) => {
     try {

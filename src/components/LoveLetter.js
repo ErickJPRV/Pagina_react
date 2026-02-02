@@ -45,7 +45,7 @@ const LoveLetter = () => {
       if (savedName) setAuthorName(savedName);
       fetchMessages(savedCode);
     }
-  }, []);
+  }, [fetchMessages]);
 
   const fetchMessages = async (code) => {
     try {

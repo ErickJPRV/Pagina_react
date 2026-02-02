@@ -113,7 +113,7 @@ function App() {
 }
 
 // Componente de corazones flotantes
-function HeartsEffect() {
+/*function HeartsEffect() {
   const [hearts, setHearts] = useState([]);
   
   useEffect(() => {
@@ -149,5 +149,5 @@ function HeartsEffect() {
     </div>
   );
 }
-
+*/
 export default App;
