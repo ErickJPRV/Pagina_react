@@ -1187,55 +1187,6 @@ body {
   }
 }
 
-/* Líneas de línea de tiempo */
-.timeline-lines {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.timeline-line {
-  position: absolute;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255, 107, 139, 0.2), transparent);
-  animation: timeline-flow 25s linear infinite;
-}
-
-.timeline-line.line-1 {
-  top: 30%;
-  width: 70%;
-  animation-delay: 0s;
-}
-
-.timeline-line.line-2 {
-  top: 60%;
-  width: 50%;
-  animation-delay: 8s;
-}
-
-.timeline-line.line-3 {
-  top: 90%;
-  width: 80%;
-  animation-delay: 16s;
-}
-
-@keyframes timeline-flow {
-  0% {
-    left: -100%;
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.5;
-  }
-  90% {
-    opacity: 0.5;
-  }
-  100% {
-    left: 100%;
-    opacity: 0;
-  }
-}
-
 /* ================= ANIMACIÓN HOME ================= */
 .home-bg {
   background: linear-gradient(135deg, #fff9fa 0%, #fff0f3 100%);
