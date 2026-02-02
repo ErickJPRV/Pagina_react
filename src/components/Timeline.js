@@ -5,7 +5,6 @@ import './Timeline.css';
 import { db } from '../firebase/firebase'; // Para guardar los eventos del Timeline
 import { supabase } from '../supabase'; // Para LEER las fotos de la galería
 import { collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { useBackgroundAnimation } from './BackgroundAnimations';
 function Timeline() {
   // ================= ESTADOS =================
   const [events, setEvents] = useState([]);
@@ -210,7 +209,6 @@ function Timeline() {
   // ================= RENDER =================
   return (
     <div className="timeline-container">
-       <Background />
       {/* ===== ENCABEZADO ===== */}
       <div className="timeline-header">
         <div className="header-top">
