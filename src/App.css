@@ -717,9 +717,9 @@ body {
 
 /* Variables CSS para animaciones aleatorias */
 .heart, .confetti-piece {
-  --random-x: calc(20 + (Math.random() * 40 - 20));
-  --random-r: calc(20 + (Math.random() * 40 - 20));
-  --confetti-x: calc(30 + (Math.random() * 40 - 20));
+  --random-x: 30px;
+  --random-r: 15deg;
+  --confetti-x: 25px;
 }
 /* ===== NAVEGACIÓN MEJORADA ===== */
 
