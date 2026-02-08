@@ -149,7 +149,16 @@ function Home({ setCurrentPage, anniversaryDate }) {
     });
   };
 
-
+  // Formatear fecha del próximo aniversario
+  const formatNextAnniversaryDate = () => {
+    if (!nextAnniversaryData.date) return '';
+    return nextAnniversaryData.date.toLocaleDateString('es-ES', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   return (
     <div className="home-container">
