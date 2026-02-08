@@ -292,7 +292,7 @@ function Home({ setCurrentPage, anniversaryDate }) {
             <div className="box-icon">📅</div>
             <div className="box-content">
               <h3>Nuestro Comienzo</h3>
-              <p className="highlight-date">Sabado, 01 de febrero del 2025</p>
+              <p className="highlight-date">{formatStartDate()}</p>
               <p className="box-detail">El día más especial de mi vida</p>
             </div>
             <div className="box-decoration">🎀</div>

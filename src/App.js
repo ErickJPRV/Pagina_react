@@ -10,7 +10,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
   
   
-  const anniversaryDate = new Date('2025-02-01'); // Ejemplo: 14 de febrero 2023
+  const anniversaryDate = new Date("2025-02-01T00:00:00"); 
   
   const renderPage = () => {
     switch(currentPage) {
